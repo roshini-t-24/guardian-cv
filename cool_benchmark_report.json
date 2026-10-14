@@ -1,0 +1,12 @@
+{
+  "architecture": "AMD64",
+  "opencv_version": "5.0.0",
+  "kernels_ms": {
+    "mog2_segmentation_ms": 2.515,
+    "clahe_recovery_ms": 0.37,
+    "canny_privacy_shield_ms": 3.413,
+    "farneback_optical_flow_ms": 70.781
+  },
+  "total_pipeline_latency_ms": 77.079,
+  "sustained_throughput_fps": 13.0
+}
