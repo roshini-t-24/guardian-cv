@@ -29,8 +29,10 @@ jobs:
       - name: Metric validation
         run: python validate_metrics.py
       - name: Kernel benchmark (${{ matrix.os }})
+        if: ${{ !cancelled() }}
         run: python benchmark_cool.py --iterations 30
       - name: Upload benchmark report
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: benchmark-${{ matrix.os }}
