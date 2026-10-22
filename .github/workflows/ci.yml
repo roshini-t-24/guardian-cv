@@ -29,10 +29,9 @@ jobs:
       - name: Kernel benchmark
         if: ${{ !cancelled() }}
         run: python benchmark_cool.py --iterations 30
-      - name: Upload diagnostics and benchmark
+      - name: Upload benchmark report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: results-${{ matrix.os }}
-          path: |
-            cool_benchmark_report.json
+          name: benchmark-${{ matrix.os }}
+          path: cool_benchmark_report.json
