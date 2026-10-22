@@ -16,3 +16,8 @@ Thumbs.db
 x86_local.json
 arm64/
 x86/
+
+# canonical procedural clips (committed so every machine decodes identical bytes)
+!videos/clip1_asymmetric_gait.mp4
+!videos/clip2_symmetric_baseline.mp4
+!videos/clip3_postural_sway.mp4

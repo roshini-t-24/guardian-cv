@@ -22,8 +22,6 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libglib2.0-0
       - name: Install dependencies
         run: pip install -r requirements.txt
-      - name: Generate clips
-        run: python -c "from utils.video_generator import ensure_clips; ensure_clips('videos')"
       - name: Unit and API tests
         run: python -m pytest test_pipeline.py -q
       - name: Determinism diagnostics
