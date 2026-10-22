@@ -29,7 +29,7 @@ jobs:
       - name: Metric validation
         run: python validate_metrics.py
       - name: Kernel benchmark (${{ matrix.os }})
-        run: python benchmark_cool.py --iters 30
+        run: python benchmark_cool.py --iterations 30
       - name: Upload benchmark report
         uses: actions/upload-artifact@v4
         with:

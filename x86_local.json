@@ -1,0 +1,92 @@
+{
+  "schema": "guardian-cv/benchmark/2",
+  "timestamp": "2026-10-22T09:02:01+00:00",
+  "environment": {
+    "architecture": "x86_64",
+    "machine": "AMD64",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python": "3.13.14",
+    "opencv": "5.0.0",
+    "cpu_count": 8,
+    "opencv_threads": 8,
+    "cpu_features": "SSE SSE2 SSE3 *SSE4.1 *SSE4.2 *AVX *FP16 *AVX2 *AVX512-SKX"
+  },
+  "frame_size": "480x360",
+  "kernels": {
+    "MOG2": {
+      "iterations": 100,
+      "mean_ms": 1.717,
+      "p50_ms": 1.694,
+      "p95_ms": 2.375,
+      "min_ms": 1.318,
+      "fps": 582.57
+    },
+    "CLAHE": {
+      "iterations": 100,
+      "mean_ms": 0.212,
+      "p50_ms": 0.211,
+      "p95_ms": 0.238,
+      "min_ms": 0.186,
+      "fps": 4723.62
+    },
+    "Canny": {
+      "iterations": 100,
+      "mean_ms": 0.305,
+      "p50_ms": 0.3,
+      "p95_ms": 0.384,
+      "min_ms": 0.255,
+      "fps": 3274.66
+    },
+    "Farneback": {
+      "iterations": 100,
+      "mean_ms": 29.889,
+      "p50_ms": 29.225,
+      "p95_ms": 32.858,
+      "min_ms": 28.641,
+      "fps": 33.46
+    }
+  },
+  "pipeline": {
+    "iterations": 100,
+    "mean_ms": 36.539,
+    "p50_ms": 36.426,
+    "p95_ms": 38.506,
+    "min_ms": 35.118,
+    "fps": 27.37
+  },
+  "parallel": null,
+  "finops": {
+    "target_fps_per_stream": 15.0,
+    "aggregate_fps": 218.96,
+    "basis": "extrapolated: single-core fps x vCPU count (optimistic, run with --parallel to measure)",
+    "streams_per_node": 14,
+    "price_hourly_usd": null,
+    "price_note": "not computed: pass --price-hourly with your instance price",
+    "table": [
+      {
+        "streams": 1,
+        "nodes_required": 1
+      },
+      {
+        "streams": 10,
+        "nodes_required": 1
+      },
+      {
+        "streams": 24,
+        "nodes_required": 2
+      },
+      {
+        "streams": 50,
+        "nodes_required": 4
+      },
+      {
+        "streams": 100,
+        "nodes_required": 8
+      }
+    ]
+  },
+  "notes": [
+    "All latencies measured on this machine on real video frames.",
+    "Cross-architecture comparison requires running this script on each machine."
+  ]
+}

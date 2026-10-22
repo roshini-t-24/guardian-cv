@@ -96,8 +96,8 @@ The image uses `python:3.12-slim`, which ships linux/amd64 and linux/arm64, so i
 ## Benchmarking
 
 ~~~powershell
-python benchmark_cool.py --iters 100
-python benchmark_cool.py --compare x86_report.json arm64_report.json
+python benchmark_cool.py --iterations 100
+python benchmark_cool.py --compare arm64_report.json
 ~~~
 
 It times MOG2, CLAHE, Canny, Farneback and the full pipeline, optionally with `--parallel` scaling. Cost figures are derived only from measurements; pass `--price-hourly` to use your own instance price. Run it on both an x86_64 and a Graviton instance to compare; the CI workflow uploads a report from each.

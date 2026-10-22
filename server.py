@@ -244,7 +244,7 @@ async def benchmark(request: Request):
     iters = max(10, min(int(body.get("iters", 100)), 500))
     proc = await asyncio.to_thread(
         subprocess.run,
-        [sys.executable, str(ROOT / "benchmark_cool.py"), "--iters", str(iters)],
+        [sys.executable, str(ROOT / "benchmark_cool.py"), "--iterations", str(iters)],
         capture_output=True, text=True, cwd=str(ROOT),
     )
     if proc.returncode != 0 or not BENCH_REPORT.is_file():
