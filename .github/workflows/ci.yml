@@ -27,10 +27,23 @@ jobs:
       - name: Unit and API tests
         run: python -m pytest test_pipeline.py -q
       - name: Metric validation
-        run: python validate_metrics.py
+        run: python validate_metrics.py 2>&1 | tee validate.log
       - name: Kernel benchmark (${{ matrix.os }})
         if: ${{ !cancelled() }}
         run: python benchmark_cool.py --iterations 30
+      - name: Publish results to run summary
+        if: ${{ !cancelled() }}
+        run: |
+          {
+            echo "### ${{ matrix.os }} - validation log"
+            echo '```'
+            tail -n 40 validate.log || true
+            echo '```'
+            echo "### ${{ matrix.os }} - benchmark report"
+            echo '```json'
+            cat cool_benchmark_report.json || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
       - name: Upload benchmark report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
