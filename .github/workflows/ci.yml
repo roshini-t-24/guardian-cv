@@ -1,0 +1,37 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install system libs
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libglib2.0-0
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Generate clips
+        run: python -c "from utils.video_generator import ensure_clips; ensure_clips('videos')"
+      - name: Unit and API tests
+        run: python -m pytest test_pipeline.py -q
+      - name: Metric validation
+        run: python validate_metrics.py
+      - name: Kernel benchmark (${{ matrix.os }})
+        run: python benchmark_cool.py --iters 30
+      - name: Upload benchmark report
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-${{ matrix.os }}
+          path: cool_benchmark_report.json

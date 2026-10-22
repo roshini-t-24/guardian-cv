@@ -1,0 +1,23 @@
+# GuardianCV — runtime dependencies.
+#
+# OpenCV is pinned exactly: pixel-kernel behaviour is part of the clinical
+# contract, and the x86_64 and Graviton arm64 builds must link the same
+# release. The web stack uses compatible-release ranges rather than exact
+# pins because I can't verify specific patch versions from here; once the
+# app runs on your machine, run `pip freeze` and pin what you tested.
+
+opencv-python-headless==5.0.0.93
+numpy==2.3.5
+
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30,<1.0
+python-multipart>=0.0.9        # required by FastAPI for .mp4 uploads
+
+pytest==8.4.2
+httpx>=0.27,<1.0               # FastAPI TestClient dependencyfastapi==0.146.0
+httpx==0.28.1
+python-multipart==0.0.32
+starlette==1.9.0
+uvicorn==0.54.0
+websockets==17.2
+fastapi==0.146.0

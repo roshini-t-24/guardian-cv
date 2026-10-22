@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# generated artifacts
+videos/*.mp4
+cool_benchmark_report.json
+smoke_*.json
+audit_check.json
+
+# local / OS
+.dockerignore
+Thumbs.db
+.DS_Store

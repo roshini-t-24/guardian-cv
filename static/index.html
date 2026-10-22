@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GuardianCV Command Center</title>
+<style>
+  :root{--bg:#0e1116;--panel:#161b22;--line:#262d38;--ink:#e6edf3;--mute:#8b96a5;
+        --teal:#3ed8b2;--amber:#f2b23e;--red:#f26e5e;--blue:#5aa8ff}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,Segoe UI,sans-serif}
+  header{display:flex;gap:12px;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line)}
+  header h1{font-size:17px;margin:0;margin-right:auto}
+  .chip{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px 10px;color:var(--mute);font-size:12px}
+  .chip b{color:var(--teal);font-weight:600}
+  .layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 54px)}
+  aside{border-right:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:12px}
+  aside h3{margin:8px 0 0;font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em}
+  select,button{width:100%;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px;font:inherit}
+  button{cursor:pointer}button:hover{border-color:var(--teal)}
+  button.primary{background:var(--teal);color:#06231b;border-color:var(--teal);font-weight:600}
+  button:disabled{opacity:.5;cursor:default}
+  label.tg{display:flex;align-items:center;gap:8px;cursor:pointer}
+  .row{display:flex;gap:8px}
+  main{padding:18px 22px}
+  nav{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:16px}
+  nav button{width:auto;border:0;border-bottom:2px solid transparent;border-radius:0;background:none;padding:10px 14px;color:var(--mute)}
+  nav button.on{color:var(--ink);border-bottom-color:var(--teal)}
+  .tab{display:none}.tab.on{display:block}
+  .grid{display:grid;grid-template-columns:7fr 5fr;gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px}
+  .card h4{margin:0 0 10px;font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em}
+  #view{width:100%;background:#000;border-radius:6px;min-height:240px;display:block}
+  .metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .m{background:#0f141a;border:1px solid var(--line);border-radius:6px;padding:10px}
+  .m span{display:block;color:var(--mute);font-size:11px}
+  .m b{font-size:20px}
+  .bar{height:6px;background:#0f141a;border-radius:3px;overflow:hidden;margin-top:6px}
+  .bar i{display:block;height:100%;width:0;background:var(--teal);transition:width .1s}
+  canvas{width:100%;height:200px;background:#0f141a;border-radius:6px;display:block}
+  pre{background:#0f141a;border:1px solid var(--line);border-radius:6px;padding:10px;margin:0;
+      overflow:auto;max-height:260px;font:12px/1.5 Consolas,monospace;color:#b7f5df;white-space:pre-wrap}
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);font-size:13px}
+  th{color:var(--mute);font-weight:500}
+  .tier{display:inline-block;padding:2px 12px;border-radius:5px;font-weight:700}
+  .GREEN{background:#1c4a38;color:#6ff0b6}.AMBER{background:#5a4210;color:var(--amber)}
+  .RED{background:#5a1e18;color:var(--red)}.INDETERMINATE{background:#2b3340;color:var(--mute)}
+  .note{color:var(--mute);font-size:12px;margin-top:8px}
+  .err{color:var(--red)}
+  @media(max-width:900px){.layout{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+  @media print{aside,header,nav,.noprint{display:none!important}.layout{display:block}
+    body{background:#fff;color:#000}.card{border:1px solid #999;background:#fff}
+    .tab{display:none!important}#tab-ehr{display:block!important}pre{color:#000;background:#fff}}
+</style>
+</head>
+<body>
+<header>
+  <h1>GuardianCV Command Center</h1>
+  <span class="chip">arch <b id="h-arch">-</b></span>
+  <span class="chip">OpenCV <b id="h-cv">-</b></span>
+  <span class="chip">Zero-PII <b>ENFORCED</b></span>
+  <span class="chip">interventions <b id="h-int">0</b></span>
+</header>
+
+<div class="layout">
+<aside>
+  <h3>Clinical feed</h3>
+  <select id="clip"></select>
+  <input type="file" id="upload" accept=".mp4">
+  <h3>Environmental stress</h3>
+  <label class="tg"><input type="checkbox" id="night"> Night-ward underexposure + noise</label>
+  <label class="tg"><input type="checkbox" id="agent" checked> Active Perception Agent</label>
+  <label class="tg"><input type="checkbox" id="pii" checked> Zero-PII shield</label>
+  <select id="mode"><option value="silhouette">silhouette</option><option value="corridor">corridor</option></select>
+  <button class="primary" id="run">Run live stream</button>
+  <button id="stop" disabled>Stop</button>
+  <h3>Clinician HITL</h3>
+  <div class="row"><button id="approve">Approve</button><button id="dismiss">Dismiss</button></div>
+  <div class="note" id="hitl-note">approvals 0 / dismissals 0</div>
+  <h3>Audit export</h3>
+  <button id="audit">Download JSON audit log</button>
+</aside>
+
+<main>
+<nav id="tabs">
+  <button class="on" data-t="live">Live Kalman Stream</button>
+  <button data-t="grav">Graviton Arm64</button>
+  <button data-t="agt">Agent &amp; MCP</button>
+  <button data-t="ehr">Clinical EHR Rx</button>
+</nav>
+
+<section class="tab on" id="tab-live">
+  <div class="grid">
+    <div class="card"><h4>Zero-PII viewport</h4><img id="view" alt="stream">
+      <div class="note" id="status">Pick a clip, then Run live stream.</div></div>
+    <div class="card"><h4>Live telemetry</h4>
+      <div class="metrics">
+        <div class="m"><span>Visual SNR confidence</span><b id="m-conf">-</b>
+          <div class="bar"><i id="b-conf"></i></div></div>
+        <div class="m"><span>Mean luminance</span><b id="m-lum">-</b></div>
+        <div class="m"><span>Kalman innovation (px)</span><b id="m-inn">-</b></div>
+        <div class="m"><span>Optical-flow sway (px/f)</span><b id="m-sway">-</b></div>
+        <div class="m"><span>Leg-fit IoU</span><b id="m-iou">-</b></div>
+        <div class="m"><span>Trunk lean (deg)</span><b id="m-lean">-</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px"><h4>Bilateral knee flexion - live (leg A teal / leg B amber)</h4>
+    <canvas id="chart" width="1000" height="200"></canvas></div>
+  <div class="card" style="margin-top:16px"><h4>Autonomous agent reasoning</h4><pre id="alog">idle</pre></div>
+  <div class="card" style="margin-top:16px"><h4>Run summary</h4><div id="summary" class="note">No completed run yet.</div></div>
+</section>
+
+<section class="tab" id="tab-grav">
+  <div class="card"><h4>Kernel micro-benchmark</h4>
+    <div class="row" style="max-width:420px"><button class="primary" id="bench">Run benchmark (30 iters)</button>
+    <button id="bench-load">Load latest report</button></div>
+    <div id="bench-out" class="note">No report loaded.</div></div>
+</section>
+
+<section class="tab" id="tab-agt">
+  <div class="card"><h4>Objective</h4>
+    <pre>pi* = argmax_{pi in {A,B,C}}  dJ(I) = C(T(pi(I))) - C(T(I))
+SENSE -> TRIGGER (mu_L &lt; 85 or C &lt; 72 %) -> OPTIMISE (Gamma / CLAHE / Hybrid) -> COMMIT / HOLD</pre></div>
+  <div class="card" style="margin-top:16px"><h4>Latest candidate scores</h4><div id="cand" class="note">No intervention yet.</div></div>
+  <div class="card" style="margin-top:16px"><h4>MCP tool surface</h4><pre id="mcp">loading...</pre></div>
+</section>
+
+<section class="tab" id="tab-ehr">
+  <div class="card"><h4>Rehabilitation protocol</h4>
+    <div class="row noprint" style="max-width:520px">
+      <button class="primary" id="ehr-load">Generate from latest run</button>
+      <button id="ehr-dl">Download ehr_rx.json</button>
+      <button id="ehr-print">Print</button></div>
+    <div id="ehr-out" class="note">Run a stream or evaluation first.</div></div>
+  <div class="card" style="margin-top:16px"><h4>FHIR-style bundle</h4><pre id="ehr-json">-</pre></div>
+</section>
+</main>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const j = async (url, opt) => {
+  const r = await fetch(url, opt); const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.error || r.statusText); return d;
+};
+const post = (url, body) => j(url, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body||{})});
+const fmt = (v, n=1) => v == null ? "-" : Number(v).toFixed(n);
+
+$("tabs").onclick = e => {
+  const t = e.target.dataset.t; if (!t) return;
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.t === t));
+  document.querySelectorAll(".tab").forEach(s => s.classList.toggle("on", s.id === "tab-" + t));
+};
+
+async function loadClips() {
+  const clips = await j("/api/clips");
+  $("clip").innerHTML = clips.map(c => `<option>${esc(c.name)}</option>`).join("");
+}
+async function boot() {
+  const h = await j("/api/health");
+  $("h-arch").textContent = h.architecture; $("h-cv").textContent = h.opencv;
+  await loadClips();
+  $("mcp").textContent = JSON.stringify(await j("/api/mcp"), null, 2);
+  refreshHitl();
+}
+$("upload").onchange = async () => {
+  const f = $("upload").files[0]; if (!f) return;
+  const fd = new FormData(); fd.append("file", f);
+  try { await j("/api/upload", {method:"POST", body:fd}); await loadClips(); $("clip").value = f.name; }
+  catch (e) { $("status").innerHTML = `<span class="err">${esc(e.message)}</span>`; }
+};
+
+const series = {a: [], b: []}, MAXPTS = 200;
+function drawChart() {
+  const cv = $("chart"), g = cv.getContext("2d"), W = cv.width, H = cv.height;
+  g.clearRect(0, 0, W, H); g.strokeStyle = "#262d38"; g.fillStyle = "#8b96a5"; g.font = "11px sans-serif";
+  for (let d = 0; d <= 180; d += 45) { const y = H - 14 - (d / 180) * (H - 24);
+    g.beginPath(); g.moveTo(34, y); g.lineTo(W, y); g.stroke(); g.fillText(d + "deg", 2, y + 4); }
+  const plot = (arr, col) => {
+    g.strokeStyle = col; g.lineWidth = 1.8; g.beginPath(); let pen = false;
+    arr.forEach((v, i) => {
+      if (v == null) { pen = false; return; }
+      const x = 34 + (i / (MAXPTS - 1)) * (W - 40), y = H - 14 - (v / 180) * (H - 24);
+      pen ? g.lineTo(x, y) : g.moveTo(x, y); pen = true;
+    }); g.stroke();
+  };
+  plot(series.a, "#3ed8b2"); plot(series.b, "#f2b23e");
+}
+function pushSeries(a, b) {
+  series.a.push(a); series.b.push(b);
+  if (series.a.length > MAXPTS) { series.a.shift(); series.b.shift(); }
+  drawChart();
+}
+
+let ws = null;
+function setRunning(on) { $("run").disabled = on; $("stop").disabled = !on; }
+$("run").onclick = () => {
+  if (!$("clip").value) return;
+  series.a.length = series.b.length = 0; drawChart();
+  const q = new URLSearchParams({
+    clip: $("clip").value, night: $("night").checked, agent: $("agent").checked,
+    pii: $("pii").checked, mode: $("mode").value,
+  });
+  ws = new WebSocket(`${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws/stream?${q}`);
+  setRunning(true); $("status").textContent = "streaming..."; $("alog").textContent = "";
+  ws.onmessage = ev => {
+    const p = JSON.parse(ev.data);
+    if (p.error) { $("status").innerHTML = `<span class="err">${esc(p.error)}</span>`; return; }
+    if (p.done) { showSummary(p.summary); $("status").textContent = "stream complete"; return; }
+    $("view").src = "data:image/jpeg;base64," + p.jpeg_b64;
+    $("m-conf").textContent = fmt(p.snr_confidence) + " %";
+    $("b-conf").style.width = p.snr_confidence + "%";
+    $("m-lum").textContent = fmt(p.luminance, 0);
+    $("m-inn").textContent = fmt(p.innovation_px, 2);
+    $("m-sway").textContent = fmt(p.sway_px, 2);
+    $("m-iou").textContent = fmt(p.iou, 2);
+    $("m-lean").textContent = fmt(p.lean_deg, 1);
+    pushSeries(p.valid ? p.flex_a : null, p.valid ? p.flex_b : null);
+    $("alog").textContent = (p.agent_log_tail || []).join("\n") || "nominal";
+    if (p.decision) showCandidates(p.decision);
+  };
+  ws.onclose = () => { setRunning(false); refreshAfterRun(); };
+  ws.onerror = () => $("status").innerHTML = '<span class="err">WebSocket error</span>';
+};
+$("stop").onclick = () => ws && ws.close();
+
+function showSummary(s) {
+  const g = s.gait || {};
+  $("summary").innerHTML = `
+    <table>
+      <tr><th>Clip</th><td>${esc(s.clip)}</td><th>Frames</th><td>${s.frames}</td></tr>
+      <tr><th>Mean confidence</th><td>${s.mean_confidence} %</td><th>Latency</th><td>${s.mean_latency_ms} ms/frame</td></tr>
+      <tr><th>Interventions</th><td>${s.agent_interventions}</td><th>Mean gain</th><td>${s.mean_agent_gain}</td></tr>
+      <tr><th>Risk tier</th><td><span class="tier ${esc(g.risk_tier)}">${esc(g.risk_tier ?? "n/a")}</span></td>
+          <th>Asymmetry</th><td>${fmt(g.asymmetry_delta)} deg</td></tr>
+      <tr><th>Symmetry index</th><td>${fmt(g.symmetry_index_pct)} %</td><th>Sway RMS</th><td>${fmt(g.sway_rms_pct, 2)} %</td></tr>
+      <tr><th>Reasons</th><td colspan="3">${esc((g.tier_reasons || []).join(" | ") || "-")}</td></tr>
+    </table>`;
+  $("h-int").textContent = s.agent_interventions;
+}
+function showCandidates(d) {
+  const rows = Object.entries(d.candidate_scores || {}).map(([k, v]) => {
+    const win = k === d.committed_policy;
+    return `<tr><td>${esc(k)}${win ? " *" : ""}</td><td>${v} %</td>
+      <td style="width:50%"><div class="bar"><i style="width:${v}%;background:${win ? "var(--teal)" : "var(--blue)"}"></i></div></td></tr>`;
+  }).join("");
+  $("cand").innerHTML = `<table>${rows}</table>
+    <div class="note">committed <b>${esc(d.committed_policy ?? "HOLD raw")}</b> |
+    C ${d.pre_confidence} -> ${d.post_confidence} (gain ${d.gain})</div>`;
+}
+async function refreshAfterRun() { try { await loadEhr(true); } catch {} }
+
+async function refreshHitl() {
+  try { const a = await j("/api/audit");
+    $("hitl-note").textContent = `approvals ${a.hitl.approvals} / dismissals ${a.hitl.dismissals}`; } catch {}
+}
+for (const act of ["approve", "dismiss"])
+  $(act).onclick = async () => {
+    await post("/api/hitl", {action: act, clip: $("clip").value}); refreshHitl();
+  };
+$("audit").onclick = async () => {
+  const blob = new Blob([JSON.stringify(await j("/api/audit"), null, 2)], {type: "application/json"});
+  const a = Object.assign(document.createElement("a"), {href: URL.createObjectURL(blob), download: "guardian_audit.json"});
+  a.click(); URL.revokeObjectURL(a.href);
+};
+
+function kv(obj) {
+  return "<table>" + Object.entries(obj || {}).map(([k, v]) =>
+    `<tr><th>${esc(k)}</th><td>${typeof v === "object" ? esc(JSON.stringify(v)) : esc(v)}</td></tr>`).join("") + "</table>";
+}
+function renderBench(r) {
+  const k = r.kernels || {}, rows = Object.entries(k).map(([n, v]) =>
+    `<tr><td>${esc(n)}</td><td>${v.mean_ms}</td><td>${v.p50_ms ?? "-"}</td><td>${v.p95_ms}</td><td>${v.fps}</td></tr>`).join("");
+  const pipe = r.pipeline ? `<tr><td><b>full pipeline</b></td><td>${r.pipeline.mean_ms}</td><td>${r.pipeline.p50_ms ?? "-"}</td><td>${r.pipeline.p95_ms}</td><td>${r.pipeline.fps}</td></tr>` : "";
+  $("bench-out").innerHTML = `
+    <h4 style="margin-top:14px">Measured on this host</h4>
+    <table><tr><th>kernel</th><th>mean ms</th><th>p50 ms</th><th>p95 ms</th><th>fps</th></tr>${rows}${pipe}</table>
+    <h4 style="margin-top:14px">Environment</h4>${kv(r.environment)}
+    ${r.parallel ? `<h4 style="margin-top:14px">Parallel scaling</h4>${kv(r.parallel)}` : ""}
+    <h4 style="margin-top:14px">FinOps (from measurements)</h4>${kv(r.finops)}`;
+}
+async function benchLoad(fn) {
+  $("bench-out").textContent = "working...";
+  try { renderBench(await fn()); } catch (e) { $("bench-out").innerHTML = `<span class="err">${esc(e.message)}</span>`; }
+}
+$("bench").onclick = () => benchLoad(() => post("/api/benchmark", {iters: 30}));
+$("bench-load").onclick = () => benchLoad(() => j("/api/benchmark/latest"));
+
+let lastRx = null;
+async function loadEhr(silent) {
+  try {
+    lastRx = await j("/api/ehr");
+    const cp = lastRx.entry[0].resource, tier = (cp.title.split("\u2014").pop() || "").trim();
+    $("ehr-out").innerHTML = `
+      <h3 style="margin:10px 0">Rehabilitation protocol <span class="tier ${esc(tier)}">${esc(tier)}</span></h3>
+      <p><b>${esc(cp.description)}</b><br>${esc(lastRx.governance.frequency || "")}</p>
+      <b>Focus</b><ul>${(cp.activity || []).map(a => `<li>${esc(a.detail.description)}</li>`).join("")}</ul>
+      <b>Precautions</b><ul>${(cp.note || []).map(n => `<li>${esc(n.text)}</li>`).join("")}</ul>
+      <div class="note">${esc(lastRx.governance.disclaimer || "Decision-support only - requires licensed clinician co-signature. Tier thresholds are not clinically validated.")}</div>`;
+    $("ehr-json").textContent = JSON.stringify(lastRx, null, 2);
+  } catch (e) { if (!silent) $("ehr-out").innerHTML = `<span class="err">${esc(e.message)}</span>`; }
+}
+$("ehr-load").onclick = () => loadEhr(false);
+$("ehr-dl").onclick = () => {
+  if (!lastRx) return;
+  const a = Object.assign(document.createElement("a"), {
+    href: URL.createObjectURL(new Blob([JSON.stringify(lastRx, null, 2)], {type: "application/json"})),
+    download: "guardian_ehr_rx.json"});
+  a.click(); URL.revokeObjectURL(a.href);
+};
+$("ehr-print").onclick = () => window.print();
+
+boot().catch(e => $("status").innerHTML = `<span class="err">${esc(e.message)}</span>`);
+drawChart();
+</script>
+</body>
+</html>
