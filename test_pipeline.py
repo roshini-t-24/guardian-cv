@@ -228,18 +228,24 @@ def test_websocket_stream_completes(client):
             last = ws.receive_json()
         assert last["summary"]["frames"] > 0
 
+
 def test_kalman_on_real_fitted_joints(clip_dir):
     cap = cv2.VideoCapture(str(clip_dir / CLIP))
-    pipe, gait, bank = ClinicalVisionPipeline(), GaitAnalyzer(), JointKalmanBank()
+    pipe, gait = ClinicalVisionPipeline(), GaitAnalyzer()
+    bank = JointKalmanBank(process_noise=server.KALMAN_PROCESS_NOISE)
     pipe.reset(); gait.reset(); bank.reset()
     inn = []
-    for _ in range(90):
+    for _ in range(135):
         ok, frame = cap.read()
         if not ok:
             break
         joints, bbox = pipe.extract_joints(pipe.segment_foreground(frame))
         step = gait.update(frame, joints, bbox)
-        inn.append(bank.update(step.get("joints") or {})["innovation_error"])
+        out = bank.update(server.gated_joints(step, bbox, frame.shape))
+        if out["tracked_joints"]:
+            inn.append(out["innovation_error"])
     cap.release()
-    assert inn and np.isfinite(inn).all()
-    assert max(inn) < 150.0
+    assert len(inn) > 40
+    assert np.isfinite(inn).all()
+    assert np.median(inn) < 10.0   # measured 6.3 px on this clip at process_noise=1.0
+    assert max(inn) < 60.0         # gated max was 21 px; warm-up spikes were 268 px

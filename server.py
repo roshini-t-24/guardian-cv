@@ -48,6 +48,20 @@ STATE: dict = {
 }
 
 
+
+KALMAN_PROCESS_NOISE = 1.0
+
+
+def gated_joints(step: dict, bbox, frame_shape) -> dict:
+    """Joints safe to feed the Kalman bank: fitted legs only, never the warm-up full-frame blob."""
+    if not step.get("valid") or bbox is None:
+        return {}
+    h, w = frame_shape[:2]
+    if bbox[2] >= 0.9 * w and bbox[3] >= 0.9 * h:
+        return {}
+    return step.get("joints") or {}
+
+
 class Session:
     """One independent stream: owns its pipeline, agent, gait and Kalman state."""
 
@@ -56,7 +70,7 @@ class Session:
         self.pipeline = ClinicalVisionPipeline()
         self.agent = ActivePerceptionAgent()
         self.gait = GaitAnalyzer()
-        self.kalman = JointKalmanBank()
+        self.kalman = JointKalmanBank(process_noise=KALMAN_PROCESS_NOISE)
         for obj in (self.pipeline, self.agent, self.gait, self.kalman):
             obj.reset()
         self.prev_mask = None
@@ -84,7 +98,7 @@ class Session:
         mask = self.pipeline.segment_foreground(committed)
         joints, bbox = self.pipeline.extract_joints(mask)
         g = self.gait.update(committed, joints, bbox)
-        kin = self.kalman.update(g.get("joints") or {})
+        kin = self.kalman.update(gated_joints(g, bbox, committed.shape))
 
         gray = cv2.cvtColor(committed, cv2.COLOR_BGR2GRAY)
         tel = compute_visual_telemetry(gray, mask)
