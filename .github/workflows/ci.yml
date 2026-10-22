@@ -24,21 +24,8 @@ jobs:
         run: pip install -r requirements.txt
       - name: Unit and API tests
         run: python -m pytest test_pipeline.py -q
-      - name: Determinism diagnostics
-        if: ${{ !cancelled() }}
-        run: python ci_diag.py > diagnostics.txt 2>&1
-      - name: Metric validation (default threads)
-        if: ${{ !cancelled() }}
-        run: |
-          echo "=== default threads ===" >> diagnostics.txt
-          python validate_metrics.py >> diagnostics.txt 2>&1 || true
-      - name: Metric validation (single thread)
-        if: ${{ !cancelled() }}
-        env:
-          OPENCV_FOR_THREADS_NUM: "1"
-        run: |
-          echo "=== single thread ===" >> diagnostics.txt
-          python validate_metrics.py >> diagnostics.txt 2>&1 || true
+      - name: Metric validation
+        run: python validate_metrics.py
       - name: Kernel benchmark
         if: ${{ !cancelled() }}
         run: python benchmark_cool.py --iterations 30
@@ -48,5 +35,4 @@ jobs:
         with:
           name: results-${{ matrix.os }}
           path: |
-            diagnostics.txt
             cool_benchmark_report.json
