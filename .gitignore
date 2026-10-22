@@ -13,3 +13,6 @@ audit_check.json
 .dockerignore
 Thumbs.db
 .DS_Store
+x86_local.json
+arm64/
+x86/
