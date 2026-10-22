@@ -227,3 +227,19 @@ def test_websocket_stream_completes(client):
         while not last.get("done"):
             last = ws.receive_json()
         assert last["summary"]["frames"] > 0
+
+def test_kalman_on_real_fitted_joints(clip_dir):
+    cap = cv2.VideoCapture(str(clip_dir / CLIP))
+    pipe, gait, bank = ClinicalVisionPipeline(), GaitAnalyzer(), JointKalmanBank()
+    pipe.reset(); gait.reset(); bank.reset()
+    inn = []
+    for _ in range(90):
+        ok, frame = cap.read()
+        if not ok:
+            break
+        joints, bbox = pipe.extract_joints(pipe.segment_foreground(frame))
+        step = gait.update(frame, joints, bbox)
+        inn.append(bank.update(step.get("joints") or {})["innovation_error"])
+    cap.release()
+    assert inn and np.isfinite(inn).all()
+    assert max(inn) < 150.0
