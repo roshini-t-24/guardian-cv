@@ -135,3 +135,9 @@ The three procedural clips in `videos/` are committed as lossless FFV1 `.avi` fi
 ## CI
 
 Every push runs the tests, metric validation and a 30-iteration kernel benchmark on an x86_64 runner and an aarch64 runner. The benchmark report is uploaded as an artifact per runner. On matched 4 vCPU GitHub runners the full pipeline measured about 24.5 ms on x86_64 and 35 ms on aarch64 (Azure Arm, not Graviton); a real Graviton comparison is still pending.
+
+## Kalman tracking notes
+
+The Kalman bank is fed only joints from frames where the two-leg fit is valid, and never the first warm-up frames where the background model is still empty and the whole frame reads as foreground. Without that gate, warm-up produced innovation spikes of about 270 px; with it the maximum was about 21 to 38 px on the procedural clips.
+
+Process noise is 1.0. It was chosen from a sweep (0.01, 0.1, 1.0, 5.0) on two procedural walking clips: median innovation fell from about 14 px to about 6 px, at the cost of slightly less smoothing. It has not been validated on real ward footage, so retune it on your own data. About a quarter of frames in the walking clips are not valid fits and are skipped, so the filter coasts through them.
