@@ -128,3 +128,10 @@ It times MOG2, CLAHE, Canny, Farneback and the full pipeline, optionally with `-
 ## License
 
 MIT, see `LICENSE`.
+## Test clips
+
+The three procedural clips in `videos/` are committed as lossless FFV1 `.avi` files. Lossy `.mp4` clips decoded to different pixels on x86_64 and aarch64, which changed the recovered knee-flexion peaks on one clip; lossless files decode identically on both. Risk tiers were stable either way, but the exact asymmetry magnitude from lossy footage can vary by decoder, so prefer lossless or high-bitrate input when comparing numbers across machines.
+
+## CI
+
+Every push runs the tests, metric validation and a 30-iteration kernel benchmark on an x86_64 runner and an aarch64 runner. The benchmark report is uploaded as an artifact per runner. On matched 4 vCPU GitHub runners the full pipeline measured about 24.5 ms on x86_64 and 35 ms on aarch64 (Azure Arm, not Graviton); a real Graviton comparison is still pending.
