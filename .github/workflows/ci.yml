@@ -26,46 +26,29 @@ jobs:
         run: python -c "from utils.video_generator import ensure_clips; ensure_clips('videos')"
       - name: Unit and API tests
         run: python -m pytest test_pipeline.py -q
-      - name: Metric validation
-        run: python validate_metrics.py 2>&1 | tee validate.log
       - name: Determinism diagnostics
         if: ${{ !cancelled() }}
+        run: python ci_diag.py > diagnostics.txt 2>&1
+      - name: Metric validation (default threads)
+        if: ${{ !cancelled() }}
         run: |
-          python - <<'PY' | tee -a "$GITHUB_STEP_SUMMARY"
-          import hashlib, cv2, glob
-          for f in sorted(glob.glob("videos/clip*_*.mp4"))[:3]:
-              raw = hashlib.sha256(open(f, "rb").read()).hexdigest()[:12]
-              cap = cv2.VideoCapture(f); h = hashlib.sha256()
-              for _ in range(30):
-                  ok, fr = cap.read()
-                  if not ok: break
-                  h.update(fr.tobytes())
-              print(f"{f}  file={raw}  decoded30={h.hexdigest()[:12]}")
-          PY
-      - name: Metric validation (single-thread)
+          echo "=== default threads ===" >> diagnostics.txt
+          python validate_metrics.py >> diagnostics.txt 2>&1 || true
+      - name: Metric validation (single thread)
         if: ${{ !cancelled() }}
         env:
           OPENCV_FOR_THREADS_NUM: "1"
-        run: python validate_metrics.py 2>&1 | tail -n 25 | tee -a "$GITHUB_STEP_SUMMARY"
-      - name: Kernel benchmark (${{ matrix.os }})
+        run: |
+          echo "=== single thread ===" >> diagnostics.txt
+          python validate_metrics.py >> diagnostics.txt 2>&1 || true
+      - name: Kernel benchmark
         if: ${{ !cancelled() }}
         run: python benchmark_cool.py --iterations 30
-      - name: Publish results to run summary
-        if: ${{ !cancelled() }}
-        run: |
-          {
-            echo "### ${{ matrix.os }} - validation log"
-            echo '```'
-            tail -n 40 validate.log || true
-            echo '```'
-            echo "### ${{ matrix.os }} - benchmark report"
-            echo '```json'
-            cat cool_benchmark_report.json || true
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
-      - name: Upload benchmark report
+      - name: Upload diagnostics and benchmark
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: benchmark-${{ matrix.os }}
-          path: cool_benchmark_report.json
+          name: results-${{ matrix.os }}
+          path: |
+            diagnostics.txt
+            cool_benchmark_report.json
