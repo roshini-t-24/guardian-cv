@@ -28,7 +28,7 @@ jobs:
         if: ${{ !cancelled() }}
         run: |
           python -c "import cv2,hashlib,glob
-          for f in sorted(glob.glob('videos/clip[123]_[as]*.mp4'))[:3]:
+          for f in sorted(glob.glob('videos/clip[123]_[ps]*.avi'))[:3]:
               c=cv2.VideoCapture(f); h=hashlib.sha256()
               for _ in range(30):
                   ok,fr=c.read()

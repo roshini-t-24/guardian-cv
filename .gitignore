@@ -18,6 +18,12 @@ arm64/
 x86/
 
 # canonical procedural clips (committed so every machine decodes identical bytes)
-!videos/clip1_asymmetric_gait.mp4
-!videos/clip2_symmetric_baseline.mp4
-!videos/clip3_postural_sway.mp4
+
+diag_*/
+arm64/
+x86_local.json
+
+videos/*.avi
+!videos/clip1_asymmetric_gait.avi
+!videos/clip2_symmetric_baseline.avi
+!videos/clip3_postural_sway.avi

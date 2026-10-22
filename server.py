@@ -211,8 +211,8 @@ def clips():
 @app.post("/api/upload")
 async def upload(file: UploadFile = File(...)):
     name = re.sub(r"[^A-Za-z0-9._-]", "_", Path(file.filename or "upload.mp4").name)
-    if not name.lower().endswith(".mp4"):
-        return JSONResponse({"error": "only .mp4 accepted"}, status_code=400)
+    if not name.lower().endswith((".mp4", ".avi")):
+        return JSONResponse({"error": "only .mp4 or .avi accepted"}, status_code=400)
     VIDEO_DIR.mkdir(exist_ok=True)
     (VIDEO_DIR / name).write_bytes(await file.read())
     return {"saved": name}

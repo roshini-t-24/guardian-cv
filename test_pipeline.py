@@ -24,7 +24,7 @@ from utils.vision_pipeline import (
 )
 
 TIERS = {"GREEN", "AMBER", "RED", "INDETERMINATE"}
-CLIP = "clip2_symmetric_baseline.mp4"
+CLIP = "clip2_symmetric_baseline.avi"
 
 
 @pytest.fixture()

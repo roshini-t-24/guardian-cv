@@ -7,9 +7,9 @@ Farneback flow, telemetry confidence) is still measured from pixels.
 Any genuine ward footage dropped into videos/ takes precedence — the
 generator never overwrites an existing file.
 
-    clip1_asymmetric_gait.mp4   right-knee stiffness / antalgic limp
-    clip2_symmetric_baseline.mp4  healthy symmetric corridor walk
-    clip3_postural_sway.mp4     acute mid-corridor balance instability
+    clip1_asymmetric_gait.avi   right-knee stiffness / antalgic limp
+    clip2_symmetric_baseline.avi  healthy symmetric corridor walk
+    clip3_postural_sway.avi     acute mid-corridor balance instability
 """
 
 from __future__ import annotations
@@ -27,17 +27,17 @@ FLOOR_Y = int(FRAME_H * 0.72)  # wall / floor boundary
 HIP_Y = FLOOR_Y - 96           # thigh(46) + shank(44) + clearance(6)
 
 CLIPS = {
-    "clip1_asymmetric_gait.mp4": {
+    "clip1_asymmetric_gait.avi": {
         "label": "Asymmetric gait — right knee stiffness",
         "seed": 11,
         "profile": "asymmetric",
     },
-    "clip2_symmetric_baseline.mp4": {
+    "clip2_symmetric_baseline.avi": {
         "label": "Symmetric baseline corridor walk",
         "seed": 22,
         "profile": "symmetric",
     },
-    "clip3_postural_sway.mp4": {
+    "clip3_postural_sway.avi": {
         "label": "Acute mid-corridor postural sway",
         "seed": 33,
         "profile": "sway",
@@ -151,7 +151,7 @@ def _render_clip(out_path: Path, seed: int, profile: str) -> None:
     rng = np.random.default_rng(seed)
     bg = _corridor_background(rng)
     writer = cv2.VideoWriter(
-        str(out_path), cv2.VideoWriter_fourcc(*FOURCC), FPS, (FRAME_W, FRAME_H)
+        str(out_path), cv2.VideoWriter_fourcc(*("FFV1" if out_path.suffix == ".avi" else FOURCC)), FPS, (FRAME_W, FRAME_H)
     )
 
     for t in range(N_FRAMES):
@@ -194,8 +194,8 @@ def ensure_clips(video_dir: str | Path = "videos") -> list[Path]:
 
 
 def list_clips(video_dir: str | Path = "videos") -> list[Path]:
-    """All .mp4 clips currently in the video directory, sorted by name."""
+    """All .avi clips currently in the video directory, sorted by name."""
     directory = Path(video_dir)
     if not directory.exists():
         return []
-    return sorted(directory.glob("*.mp4"))
+    return sorted([*directory.glob("*.mp4"), *directory.glob("*.avi")])
