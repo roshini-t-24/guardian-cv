@@ -24,14 +24,30 @@ jobs:
         run: pip install -r requirements.txt
       - name: Unit and API tests
         run: python -m pytest test_pipeline.py -q
+      - name: Decoded-frame hashes
+        if: ${{ !cancelled() }}
+        run: |
+          python -c "import cv2,hashlib,glob
+          for f in sorted(glob.glob('videos/clip[123]_[as]*.mp4'))[:3]:
+              c=cv2.VideoCapture(f); h=hashlib.sha256()
+              for _ in range(30):
+                  ok,fr=c.read()
+                  if not ok: break
+                  h.update(fr.tobytes())
+              print(f, h.hexdigest()[:12])" | tee decoded.txt
       - name: Metric validation
-        run: python validate_metrics.py
+        run: |
+          set -o pipefail
+          python validate_metrics.py 2>&1 | tee validate.log
       - name: Kernel benchmark
         if: ${{ !cancelled() }}
         run: python benchmark_cool.py --iterations 30
-      - name: Upload benchmark report
+      - name: Upload results
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: benchmark-${{ matrix.os }}
-          path: cool_benchmark_report.json
+          name: results-${{ matrix.os }}
+          path: |
+            decoded.txt
+            validate.log
+            cool_benchmark_report.json
