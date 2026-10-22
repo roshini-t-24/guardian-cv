@@ -51,7 +51,7 @@ DEFAULT_ITERATIONS = 150
 WARMUP = 10
 TARGET_FPS = 15.0
 STREAM_TIERS = (1, 10, 24, 50, 100)
-CLIP_FOR_BENCH = "clip2_symmetric_baseline.mp4"
+CLIP_FOR_BENCH = "clip2_symmetric_baseline.avi"
 
 
 # -- environment ---------------------------------------------------------------
@@ -86,12 +86,12 @@ def _clip_path() -> Path:
     preferred = video_dir / CLIP_FOR_BENCH
     if preferred.exists():
         return preferred
-    existing = sorted(video_dir.glob("*.mp4")) if video_dir.exists() else []
+    existing = sorted([*video_dir.glob("*.avi"), *video_dir.glob("*.mp4")]) if video_dir.exists() else []
     if existing:
         return existing[0]
     raise SystemExit(
-        "No .mp4 found in videos/ and utils/video_generator.py has no ensure_clips(). "
-        "Put any .mp4 in videos/ or update utils/video_generator.py."
+        "No .avi/.mp4 found in videos/ and utils/video_generator.py has no ensure_clips(). "
+        "Put any .avi or .mp4 in videos/ or update utils/video_generator.py."
     )
 
 

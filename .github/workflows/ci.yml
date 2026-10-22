@@ -41,7 +41,7 @@ jobs:
           python validate_metrics.py 2>&1 | tee validate.log
       - name: Kernel benchmark
         if: ${{ !cancelled() }}
-        run: python benchmark_cool.py --iterations 30
+        run: python benchmark_cool.py --iterations 30 2>&1 | tee bench.log
       - name: Upload results
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
@@ -50,4 +50,5 @@ jobs:
           path: |
             decoded.txt
             validate.log
+            bench.log
             cool_benchmark_report.json
