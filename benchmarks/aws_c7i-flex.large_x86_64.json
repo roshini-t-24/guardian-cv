@@ -1,0 +1,102 @@
+{
+  "schema": "guardian-cv/benchmark/2",
+  "timestamp": "2026-10-23T05:34:43+00:00",
+  "environment": {
+    "architecture": "x86_64",
+    "machine": "x86_64",
+    "platform": "Linux-7.0.0-1014-aws-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "opencv": "5.0.0",
+    "cpu_count": 2,
+    "opencv_threads": 2,
+    "cpu_features": "SSE SSE2 SSE3 *SSE4.1 *SSE4.2 *AVX *FP16 *AVX2 *AVX512-SKX"
+  },
+  "frame_size": "480x360",
+  "kernels": {
+    "MOG2": {
+      "iterations": 100,
+      "mean_ms": 2.031,
+      "p50_ms": 2.035,
+      "p95_ms": 2.177,
+      "min_ms": 1.85,
+      "fps": 492.42
+    },
+    "CLAHE": {
+      "iterations": 100,
+      "mean_ms": 0.569,
+      "p50_ms": 0.571,
+      "p95_ms": 0.608,
+      "min_ms": 0.534,
+      "fps": 1756.77
+    },
+    "Canny": {
+      "iterations": 100,
+      "mean_ms": 0.397,
+      "p50_ms": 0.395,
+      "p95_ms": 0.434,
+      "min_ms": 0.369,
+      "fps": 2519.02
+    },
+    "Farneback": {
+      "iterations": 100,
+      "mean_ms": 29.418,
+      "p50_ms": 29.422,
+      "p95_ms": 30.96,
+      "min_ms": 28.281,
+      "fps": 33.99
+    }
+  },
+  "pipeline": {
+    "iterations": 100,
+    "mean_ms": 32.749,
+    "p50_ms": 33.063,
+    "p95_ms": 34.485,
+    "min_ms": 31.367,
+    "fps": 30.54
+  },
+  "parallel": null,
+  "finops": {
+    "target_fps_per_stream": 15.0,
+    "aggregate_fps": 61.08,
+    "basis": "extrapolated: single-core fps x vCPU count (optimistic, run with --parallel to measure)",
+    "streams_per_node": 4,
+    "price_hourly_usd": 0.08479,
+    "price_note": "supplied by caller",
+    "table": [
+      {
+        "streams": 1,
+        "nodes_required": 1,
+        "usd_per_hour": 0.0848,
+        "usd_per_stream_hour": 0.0848
+      },
+      {
+        "streams": 10,
+        "nodes_required": 3,
+        "usd_per_hour": 0.2544,
+        "usd_per_stream_hour": 0.0254
+      },
+      {
+        "streams": 24,
+        "nodes_required": 6,
+        "usd_per_hour": 0.5087,
+        "usd_per_stream_hour": 0.0212
+      },
+      {
+        "streams": 50,
+        "nodes_required": 13,
+        "usd_per_hour": 1.1023,
+        "usd_per_stream_hour": 0.022
+      },
+      {
+        "streams": 100,
+        "nodes_required": 25,
+        "usd_per_hour": 2.1198,
+        "usd_per_stream_hour": 0.0212
+      }
+    ]
+  },
+  "notes": [
+    "All latencies measured on this machine on real video frames.",
+    "Cross-architecture comparison requires running this script on each machine."
+  ]
+}
