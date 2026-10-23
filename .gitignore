@@ -27,3 +27,5 @@ videos/*.avi
 !videos/clip1_asymmetric_gait.avi
 !videos/clip2_symmetric_baseline.avi
 !videos/clip3_postural_sway.avi
+
+context.txt
