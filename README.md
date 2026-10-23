@@ -141,3 +141,13 @@ Every push runs the tests, metric validation and a 30-iteration kernel benchmark
 The Kalman bank is fed only joints from frames where the two-leg fit is valid, and never the first warm-up frames where the background model is still empty and the whole frame reads as foreground. Without that gate, warm-up produced innovation spikes of about 270 px; with it the maximum was about 21 to 38 px on the procedural clips.
 
 Process noise is 1.0. It was chosen from a sweep (0.01, 0.1, 1.0, 5.0) on two procedural walking clips: median innovation fell from about 14 px to about 6 px, at the cost of slightly less smoothing. It has not been validated on real ward footage, so retune it on your own data. About a quarter of frames in the walking clips are not valid fits and are skipped, so the filter coasts through them.
+
+## Active perception agent: measured results
+
+`evaluate_agent.py` runs every clip at four brightness levels (nominal, dim, night, severe), 60 frames each, with the agent off and on.
+
+- Confidence rises with the agent on (night: 55.9 to 88.9).
+- Restoring pixels before segmentation did not improve leg tracking. Valid-fit rate at night fell from 53.6% to 28.9% when tracking ran on the restored frame, because the confidence score rewards brightness and the restored frames were worse for background subtraction.
+- Design change: segmentation and gait analysis run on the stressed frame by default (`track_on_restored=False`); restored frames are for display and the confidence readout. Valid-fit rates are then identical with the agent on or off.
+- The agent therefore does not currently improve tracking. Both modes are reproducible: `python evaluate_agent.py --max-frames 60` and `--track-restored`. Reports: `eval_track_raw.json`, `eval_track_restored.json`.
+- Limits: 60 frames per run, one seed, six clips (three procedural, three drawn figures), and many reference tiers are INDETERMINATE, so the tier column is weak evidence.

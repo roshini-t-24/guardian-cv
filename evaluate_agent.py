@@ -31,7 +31,8 @@ def stress(frame: np.ndarray, gain: float, idx: int) -> np.ndarray:
     return cv2.add(out, noise)
 
 
-def run(path: Path, gain: float, agent_on: bool, max_frames: int) -> dict:
+def run(path: Path, gain: float, agent_on: bool, max_frames: int,
+        track_on_restored: bool = True) -> dict:
     pipe, agent, gait = ClinicalVisionPipeline(), ActivePerceptionAgent(), GaitAnalyzer()
     for o in (pipe, agent, gait):
         o.reset()
@@ -49,9 +50,10 @@ def run(path: Path, gain: float, agent_on: bool, max_frames: int) -> dict:
             if d["triggered"]:
                 gains.append(d["gain"])
                 policies[d["committed_policy"] or "HOLD"] += 1
-        mask = pipe.segment_foreground(committed)
+        track = committed if track_on_restored else raw
+        mask = pipe.segment_foreground(track)
         joints, bbox = pipe.extract_joints(mask)
-        step = gait.update(committed, joints, bbox)
+        step = gait.update(track, joints, bbox)
         tel = compute_visual_telemetry(cv2.cvtColor(committed, cv2.COLOR_BGR2GRAY), mask)
         conf.append(tel["snr_confidence"])
         valid += int(bool(step.get("valid")))
@@ -74,6 +76,8 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--max-frames", type=int, default=100)
     ap.add_argument("--out", default="eval_agent_report.json")
+    ap.add_argument("--track-restored", dest="track_restored", action="store_true",
+                    help="segment/track on the restored frame (default: stressed frame)")
     args = ap.parse_args()
 
     clips, seen = [], set()
@@ -87,7 +91,7 @@ def main() -> None:
         ref = run(clip, 1.0, False, args.max_frames)["tier"]
         for level, gain in STRESS.items():
             off = run(clip, gain, False, args.max_frames)
-            on = run(clip, gain, True, args.max_frames)
+            on = run(clip, gain, True, args.max_frames, track_on_restored=args.track_restored)
             rows.append({
                 "clip": clip.stem, "stress": level, "ref_tier": ref,
                 "off": off, "on": on,

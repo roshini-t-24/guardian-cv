@@ -1,0 +1,686 @@
+[
+  {
+    "clip": "clip1_asymmetric_gait",
+    "stress": "nominal",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 91.36,
+      "valid_pct": 61.7,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 91.36,
+      "valid_pct": 61.7,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "conf_gain": 0.0,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": true,
+    "tier_ok_on": true
+  },
+  {
+    "clip": "clip1_asymmetric_gait",
+    "stress": "dim",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 68.99,
+      "valid_pct": 61.7,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 88.41,
+      "valid_pct": 61.7,
+      "tier": "INDETERMINATE",
+      "interventions": 60,
+      "mean_gain": 19.42,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 19.42,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": true,
+    "tier_ok_on": true
+  },
+  {
+    "clip": "clip1_asymmetric_gait",
+    "stress": "night",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 54.83,
+      "valid_pct": 56.7,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 87.44,
+      "valid_pct": 56.7,
+      "tier": "INDETERMINATE",
+      "interventions": 60,
+      "mean_gain": 32.61,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 32.61,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": true,
+    "tier_ok_on": true
+  },
+  {
+    "clip": "clip1_asymmetric_gait",
+    "stress": "severe",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 36.26,
+      "valid_pct": 25.0,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 82.22,
+      "valid_pct": 25.0,
+      "tier": "INDETERMINATE",
+      "interventions": 60,
+      "mean_gain": 45.95,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 45.96,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": true,
+    "tier_ok_on": true
+  },
+  {
+    "clip": "clip2_symmetric_baseline",
+    "stress": "nominal",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 91.68,
+      "valid_pct": 61.7,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 91.68,
+      "valid_pct": 61.7,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "conf_gain": 0.0,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": true,
+    "tier_ok_on": true
+  },
+  {
+    "clip": "clip2_symmetric_baseline",
+    "stress": "dim",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 68.95,
+      "valid_pct": 60.0,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 88.25,
+      "valid_pct": 60.0,
+      "tier": "INDETERMINATE",
+      "interventions": 60,
+      "mean_gain": 19.3,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 19.3,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": true,
+    "tier_ok_on": true
+  },
+  {
+    "clip": "clip2_symmetric_baseline",
+    "stress": "night",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 55.05,
+      "valid_pct": 50.0,
+      "tier": "RED",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 87.45,
+      "valid_pct": 50.0,
+      "tier": "RED",
+      "interventions": 60,
+      "mean_gain": 32.4,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 32.4,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": false,
+    "tier_ok_on": false
+  },
+  {
+    "clip": "clip2_symmetric_baseline",
+    "stress": "severe",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 36.31,
+      "valid_pct": 28.3,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 82.22,
+      "valid_pct": 28.3,
+      "tier": "INDETERMINATE",
+      "interventions": 60,
+      "mean_gain": 45.91,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 45.91,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": true,
+    "tier_ok_on": true
+  },
+  {
+    "clip": "clip3_postural_sway",
+    "stress": "nominal",
+    "ref_tier": "GREEN",
+    "off": {
+      "frames": 60,
+      "mean_conf": 92.04,
+      "valid_pct": 13.3,
+      "tier": "GREEN",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 92.04,
+      "valid_pct": 13.3,
+      "tier": "GREEN",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "conf_gain": 0.0,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": true,
+    "tier_ok_on": true
+  },
+  {
+    "clip": "clip3_postural_sway",
+    "stress": "dim",
+    "ref_tier": "GREEN",
+    "off": {
+      "frames": 60,
+      "mean_conf": 69.75,
+      "valid_pct": 18.3,
+      "tier": "AMBER",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 89.5,
+      "valid_pct": 18.3,
+      "tier": "AMBER",
+      "interventions": 60,
+      "mean_gain": 19.75,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 19.75,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": false,
+    "tier_ok_on": false
+  },
+  {
+    "clip": "clip3_postural_sway",
+    "stress": "night",
+    "ref_tier": "GREEN",
+    "off": {
+      "frames": 60,
+      "mean_conf": 56.23,
+      "valid_pct": 1.7,
+      "tier": "RED",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 88.68,
+      "valid_pct": 1.7,
+      "tier": "RED",
+      "interventions": 60,
+      "mean_gain": 32.45,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 32.45,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": false,
+    "tier_ok_on": false
+  },
+  {
+    "clip": "clip3_postural_sway",
+    "stress": "severe",
+    "ref_tier": "GREEN",
+    "off": {
+      "frames": 60,
+      "mean_conf": 37.87,
+      "valid_pct": 0.0,
+      "tier": "GREEN",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 83.54,
+      "valid_pct": 0.0,
+      "tier": "GREEN",
+      "interventions": 60,
+      "mean_gain": 45.67,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 45.67,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": true,
+    "tier_ok_on": true
+  },
+  {
+    "clip": "clip1_mixamo_limp_benchmark",
+    "stress": "nominal",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 91.08,
+      "valid_pct": 50.0,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 91.08,
+      "valid_pct": 50.0,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "conf_gain": 0.0,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": true,
+    "tier_ok_on": true
+  },
+  {
+    "clip": "clip1_mixamo_limp_benchmark",
+    "stress": "dim",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 72.56,
+      "valid_pct": 51.7,
+      "tier": null,
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 90.74,
+      "valid_pct": 51.7,
+      "tier": null,
+      "interventions": 60,
+      "mean_gain": 18.19,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 18.18,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": false,
+    "tier_ok_on": false
+  },
+  {
+    "clip": "clip1_mixamo_limp_benchmark",
+    "stress": "night",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 57.31,
+      "valid_pct": 58.3,
+      "tier": null,
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 90.4,
+      "valid_pct": 58.3,
+      "tier": null,
+      "interventions": 60,
+      "mean_gain": 33.09,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 33.09,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": false,
+    "tier_ok_on": false
+  },
+  {
+    "clip": "clip1_mixamo_limp_benchmark",
+    "stress": "severe",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 35.93,
+      "valid_pct": 73.3,
+      "tier": "GREEN",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 82.73,
+      "valid_pct": 73.3,
+      "tier": "GREEN",
+      "interventions": 60,
+      "mean_gain": 46.79,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 46.8,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": false,
+    "tier_ok_on": false
+  },
+  {
+    "clip": "clip2_healthy_corridor_walk",
+    "stress": "nominal",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 90.7,
+      "valid_pct": 55.0,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 90.7,
+      "valid_pct": 55.0,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "conf_gain": 0.0,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": true,
+    "tier_ok_on": true
+  },
+  {
+    "clip": "clip2_healthy_corridor_walk",
+    "stress": "dim",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 71.76,
+      "valid_pct": 58.3,
+      "tier": null,
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 90.21,
+      "valid_pct": 58.3,
+      "tier": null,
+      "interventions": 60,
+      "mean_gain": 18.45,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 18.45,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": false,
+    "tier_ok_on": false
+  },
+  {
+    "clip": "clip2_healthy_corridor_walk",
+    "stress": "night",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 55.95,
+      "valid_pct": 85.0,
+      "tier": null,
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 89.67,
+      "valid_pct": 85.0,
+      "tier": null,
+      "interventions": 60,
+      "mean_gain": 33.72,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 33.72,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": false,
+    "tier_ok_on": false
+  },
+  {
+    "clip": "clip2_healthy_corridor_walk",
+    "stress": "severe",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 35.52,
+      "valid_pct": 3.3,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 81.48,
+      "valid_pct": 3.3,
+      "tier": "INDETERMINATE",
+      "interventions": 60,
+      "mean_gain": 45.96,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 45.96,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": true,
+    "tier_ok_on": true
+  },
+  {
+    "clip": "clip3_acute_stumble_event",
+    "stress": "nominal",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 90.74,
+      "valid_pct": 45.0,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 90.74,
+      "valid_pct": 45.0,
+      "tier": "INDETERMINATE",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "conf_gain": 0.0,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": true,
+    "tier_ok_on": true
+  },
+  {
+    "clip": "clip3_acute_stumble_event",
+    "stress": "dim",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 71.97,
+      "valid_pct": 48.3,
+      "tier": null,
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 90.16,
+      "valid_pct": 48.3,
+      "tier": null,
+      "interventions": 60,
+      "mean_gain": 18.18,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 18.19,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": false,
+    "tier_ok_on": false
+  },
+  {
+    "clip": "clip3_acute_stumble_event",
+    "stress": "night",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 56.21,
+      "valid_pct": 70.0,
+      "tier": null,
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 89.62,
+      "valid_pct": 70.0,
+      "tier": null,
+      "interventions": 60,
+      "mean_gain": 33.41,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 33.41,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": false,
+    "tier_ok_on": false
+  },
+  {
+    "clip": "clip3_acute_stumble_event",
+    "stress": "severe",
+    "ref_tier": "INDETERMINATE",
+    "off": {
+      "frames": 60,
+      "mean_conf": 35.43,
+      "valid_pct": 23.3,
+      "tier": "RED",
+      "interventions": 0,
+      "mean_gain": 0.0,
+      "policies": {}
+    },
+    "on": {
+      "frames": 60,
+      "mean_conf": 81.78,
+      "valid_pct": 23.3,
+      "tier": "RED",
+      "interventions": 60,
+      "mean_gain": 46.35,
+      "policies": {
+        "Hybrid_Gamma_CLAHE_4.2_Bilateral": 60
+      }
+    },
+    "conf_gain": 46.35,
+    "valid_gain_pct": 0.0,
+    "tier_ok_off": false,
+    "tier_ok_on": false
+  }
+]

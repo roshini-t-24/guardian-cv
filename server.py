@@ -65,8 +65,10 @@ def gated_joints(step: dict, bbox, frame_shape) -> dict:
 class Session:
     """One independent stream: owns its pipeline, agent, gait and Kalman state."""
 
-    def __init__(self, night: bool = False, agent_on: bool = True) -> None:
+    def __init__(self, night: bool = False, agent_on: bool = True,
+                 track_on_restored: bool = False) -> None:
         self.night, self.agent_on = night, agent_on
+        self.track_on_restored = track_on_restored
         self.pipeline = ClinicalVisionPipeline()
         self.agent = ActivePerceptionAgent()
         self.gait = GaitAnalyzer()
@@ -95,10 +97,13 @@ class Session:
         if self.agent_on:
             decision, committed = self.agent.act(raw, mask=self.prev_mask)
 
-        mask = self.pipeline.segment_foreground(committed)
+        # Measured: restoration raises confidence but did not improve tracking, so by default
+        # segmentation and gait run on the stressed frame; the restored frame is display only.
+        track = committed if self.track_on_restored else raw
+        mask = self.pipeline.segment_foreground(track)
         joints, bbox = self.pipeline.extract_joints(mask)
-        g = self.gait.update(committed, joints, bbox)
-        kin = self.kalman.update(gated_joints(g, bbox, committed.shape))
+        g = self.gait.update(track, joints, bbox)
+        kin = self.kalman.update(gated_joints(g, bbox, track.shape))
 
         gray = cv2.cvtColor(committed, cv2.COLOR_BGR2GRAY)
         tel = compute_visual_telemetry(gray, mask)
@@ -322,7 +327,8 @@ async def ws_stream(ws: WebSocket):
     fps = cap.get(cv2.CAP_PROP_FPS) or 15.0
     pii = _flag(q, "pii", True)
     mode = q.get("mode", "silhouette")
-    sess = Session(night=_flag(q, "night", False), agent_on=_flag(q, "agent", True))
+    sess = Session(night=_flag(q, "night", False), agent_on=_flag(q, "agent", True),
+                   track_on_restored=_flag(q, "track_restored", False))
     try:
         while True:
             t0 = time.perf_counter()

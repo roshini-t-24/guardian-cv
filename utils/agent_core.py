@@ -70,14 +70,19 @@ def _gamma_lut(frame: np.ndarray, gamma: float) -> np.ndarray:
     return cv2.LUT(frame, table)
 
 
+def _denoise(frame: np.ndarray) -> np.ndarray:
+    """5x5 Gaussian: sensor noise amplified by a brightness lift floods MOG2 otherwise."""
+    return cv2.GaussianBlur(frame, (5, 5), 0)
+
+
 def _policy_gamma(frame: np.ndarray) -> np.ndarray:
     """Policy A — pure gamma 0.48 LUT lift."""
-    return _gamma_lut(frame, gamma=0.48)
+    return _denoise(_gamma_lut(frame, gamma=0.48))
 
 
 def _policy_lab_clahe(frame: np.ndarray) -> np.ndarray:
     """Policy B — CIELAB L-channel CLAHE(3.2, 8x8) + 3x3 Gaussian."""
-    lab = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)
+    lab = cv2.cvtColor(_denoise(frame), cv2.COLOR_BGR2LAB)
     l_channel, a_channel, b_channel = cv2.split(lab)
     clahe = cv2.createCLAHE(clipLimit=3.2, tileGridSize=(8, 8))
     l_channel = clahe.apply(l_channel)
@@ -87,7 +92,7 @@ def _policy_lab_clahe(frame: np.ndarray) -> np.ndarray:
 
 def _policy_hybrid(frame: np.ndarray) -> np.ndarray:
     """Policy C — gamma 0.42 lift + CLAHE 4.2 + edge-preserving bilateral."""
-    lifted = _gamma_lut(frame, gamma=0.42)
+    lifted = _denoise(_gamma_lut(frame, gamma=0.42))
     lab = cv2.cvtColor(lifted, cv2.COLOR_BGR2LAB)
     l_channel, a_channel, b_channel = cv2.split(lab)
     clahe = cv2.createCLAHE(clipLimit=4.2, tileGridSize=(8, 8))
