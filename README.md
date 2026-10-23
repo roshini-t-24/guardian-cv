@@ -151,3 +151,7 @@ Process noise is 1.0. It was chosen from a sweep (0.01, 0.1, 1.0, 5.0) on two pr
 - Design change: segmentation and gait analysis run on the stressed frame by default (`track_on_restored=False`); restored frames are for display and the confidence readout. Valid-fit rates are then identical with the agent on or off.
 - The agent therefore does not currently improve tracking. Both modes are reproducible: `python evaluate_agent.py --max-frames 60` and `--track-restored`. Reports: `eval_track_raw.json`, `eval_track_restored.json`.
 - Limits: 60 frames per run, one seed, six clips (three procedural, three drawn figures), and many reference tiers are INDETERMINATE, so the tier column is weak evidence.
+
+### Attempts to make restoration help tracking (all negative)
+
+Four designs were evaluated on 6 clips x 4 brightness levels (60 frames, valid-fit rate with the agent on vs off, night level): confidence-scored policies (53.6 to 28.9), denoised policies (53.6 to 28.9), single forced policies (best 49.7 vs 53.6 for no restoration), and a shadow-segmentation tracking objective (53.6 to 22.2). None improved leg-fit validity, so tracking runs on the stressed frame and the agent's restoration is display-only. Single seed, short runs; the conclusion is for this segmentation pipeline.
