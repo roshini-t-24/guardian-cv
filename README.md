@@ -155,3 +155,15 @@ Process noise is 1.0. It was chosen from a sweep (0.01, 0.1, 1.0, 5.0) on two pr
 ### Attempts to make restoration help tracking (all negative)
 
 Four designs were evaluated on 6 clips x 4 brightness levels (60 frames, valid-fit rate with the agent on vs off, night level): confidence-scored policies (53.6 to 28.9), denoised policies (53.6 to 28.9), single forced policies (best 49.7 vs 53.6 for no restoration), and a shadow-segmentation tracking objective (53.6 to 22.2). None improved leg-fit validity, so tracking runs on the stressed frame and the agent's restoration is display-only. Single seed, short runs; the conclusion is for this segmentation pipeline.
+
+## AWS measurements (single stream, 100 iterations, 2 vCPU, Ubuntu 24.04, ap-south-1)
+
+| Instance | CPU | Full pipeline | Farneback | Linux on-demand price |
+| --- | --- | --- | --- | --- |
+| c7i-flex.large | Intel x86_64 | 32.7 ms (30.5 fps) | 29.4 ms | $0.08479/h |
+| t4g.small | AWS Graviton2 (Neoverse-N1) | 58.3 ms (17.2 fps) | 53.2 ms | $0.0112/h |
+
+- The Intel instance is about 1.8x faster per frame.
+- The Graviton2 instance is about 7.6x cheaper per hour; from these two single-stream runs, roughly 4x cheaper per processed frame. This is arithmetic on the two reports, not a separate measurement.
+- t4g.small sustains one 15 fps stream with little headroom (17.2 fps).
+- Limits: Graviton2, not Graviton4; burstable instance types; one run each; `--parallel` streams-per-node was not measured; prices were entered at test time and should be re-checked. Reports are in `benchmarks/`; reproduce with `aws_bench.sh`.
